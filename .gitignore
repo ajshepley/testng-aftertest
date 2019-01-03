@@ -1,0 +1,8 @@
+### Java ###
+*.class
+
+### Build ###
+
+/out/
+/build/
+.gradle
