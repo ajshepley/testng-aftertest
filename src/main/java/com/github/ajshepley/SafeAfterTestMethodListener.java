@@ -72,7 +72,7 @@ public class SafeAfterTestMethodListener implements ITestListener {
 
   @Override
   public void onTestSkipped(final ITestResult result) {
-    this.processAfterMethods(result);
+    // no-op
   }
 
   private void processAfterMethods(final ITestResult result) {
@@ -111,7 +111,7 @@ public class SafeAfterTestMethodListener implements ITestListener {
         afterMethod.invoke(testClassInstance);
       } catch (final Exception exc) {
         System.out.println(
-            "Failed to access afterMethod due to caught exception: "
+            "Failure while executing afterMethod due to caught exception: "
             + afterMethod.toString()
             + ". Exception: "
             + exc.toString()
