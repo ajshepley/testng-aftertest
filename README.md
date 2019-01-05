@@ -81,7 +81,7 @@ However, in practice you may have test classes with a ton of unit tests and a si
 This annotation and listener provides a way to have cleanup or verification tasks whose failure is constrained to only the executing test method.
 ____
 
-## Building
+## Building and Dependencies
 
 The included Gradle4 wrappers can be used to build the project (`./gradlew` or `.\gradlew.bat`).
 
