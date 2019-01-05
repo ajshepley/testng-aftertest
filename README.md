@@ -76,16 +76,18 @@ If any of the test code throws an exception or ends the test before the cleanup 
 
 This is by design - TestNG does not want AfterX methods to be considered part of a test, and so a failure represents an issue with the test as a whole. The whole test is suspect.
 
-However, in practice you may have test classes with a ton of unit tests and a single failure like this can render them difficult to troubleshoot.
+However, in practice you may have test classes with a ton of unit tests and a single failure like this can render them difficult to troubleshoot. Additionally, you may have code that you want to share between tests automatically, that can indicate a failure with a specific test, but not compromise the entire test suite upon failure.
 
-Additionally, you may have code that you want to share between tests automatically, that can indicate a failure with a specific test, but not compromise the entire test suite upon failure.
-
+This annotation and listener provides a way to have cleanup or verification tasks whose failure is constrained to only the executing test method.
 ____
 
 ## Building
 
-The included Gradle4 wrappers can be used to build the project (`./gradlew` or `./gradlew.bat`).
+The included Gradle4 wrappers can be used to build the project (`./gradlew` or `.\gradlew.bat`).
 
-TestNG version can be tweaked in the `ext` block in `build.gradle`.
+This repo is meant more as an illustration of how to work around this TestNG AfterX deficiency than to server directly as a dependency.
 
-However, this repo is meant more as an illustration of how to work around this TestNG AfterX deficiency than to server directly as a dependency.
+However, a classes dependency jar can be created using the `jar` task. This is included as a default build task.
+
+The TestNG version can be tweaked in the `ext` block in `build.gradle`.
+
