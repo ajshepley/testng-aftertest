@@ -2,7 +2,7 @@
 
 An annotation and listener designed to "safely" execute methods and calls after a TestNG unit test has completed.
 
-Methods marked with this annotations will be executed after a test case has completed, whether it passed or failed.
+Methods marked with this annotation will be executed after a test case has completed, whether it passed or failed.
 
 ```java
 @SafeAfterTestMethod(priority = 1)
