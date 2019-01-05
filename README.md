@@ -84,8 +84,8 @@ ____
 
 ## Building
 
-The included Gradle3 wrappers can be used to build the project (`./gradlew` or `./gradlew.bat`).
+The included Gradle4 wrappers can be used to build the project (`./gradlew` or `./gradlew.bat`).
 
-TestNG 
+TestNG version can be tweaked in the `ext` block in `build.gradle`.
 
 However, this repo is meant more as an illustration of how to work around this TestNG AfterX deficiency than to server directly as a dependency.
