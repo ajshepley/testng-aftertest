@@ -22,6 +22,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface SafeAfterTestMethod {
-  // Lower priorities are processed first.
+  // Lower priority values are processed first.
   int priority() default 0;
 }
