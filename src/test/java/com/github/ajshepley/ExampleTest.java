@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 // Note that the listener only needs to be present on a single unit test within the executed suite
 // to look for and invoke @SafeAfterTestMethod annotated methods.
 @Listeners(SafeAfterTestMethodListener.class)
+@SuppressWarnings("unused")
 public class ExampleTest {
 
   @Test

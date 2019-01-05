@@ -2,7 +2,7 @@ package com.github.ajshepley;
 
 import org.testng.internal.TestResult;
 
-public class FakeTestResult extends TestResult {
+class FakeTestResult extends TestResult {
 
   private final Object instance;
 

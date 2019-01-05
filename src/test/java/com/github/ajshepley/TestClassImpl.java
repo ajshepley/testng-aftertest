@@ -4,7 +4,7 @@ import org.testng.IClass;
 import org.testng.xml.XmlClass;
 import org.testng.xml.XmlTest;
 
-public class TestClassImpl implements IClass {
+class TestClassImpl implements IClass {
 
   private final Class<?> realClass;
 
@@ -43,6 +43,7 @@ public class TestClassImpl implements IClass {
   }
 
   @Override
+  @Deprecated
   public int getInstanceCount() {
     return 0;
   }

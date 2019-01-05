@@ -4,6 +4,7 @@ import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
 
+@SuppressWarnings("unused")
 public class ExampleTest2 {
 
   @Test
