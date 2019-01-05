@@ -1,11 +1,11 @@
 # testng-aftertest
 
-A series of annotations and test methods designed to "safely" execute methods and calls after a TestNG unit test has completed.
+An annotation and listener designed to "safely" execute methods and calls after a TestNG unit test has completed.
 
-Methods marked with these annotations will be executed after a test case has completed, whether it passed or failed.
+Methods marked with this annotations will be executed after a test case has completed, whether it passed or failed.
 
 ```java
-@SafeAfterMethod(priority = 1)
+@SafeAfterTestMethod(priority = 1)
 public void myTearDownMethod() {
   this.someSharedTestObject = null;
   this.someTeardownMethodThatCanThrowAnException();
@@ -16,13 +16,13 @@ public void myTearDownMethod() {
 If at least one test class in the project is marked with the Listener class, then the methods will be considered and processed.
 
 ```java
-@Listeners(SafeAfterTestListener.class)
+@Listeners(SafeAfterTestMethodListener.class)
 public class MyTestClass() {
   ...
 }
 ```
 
-If a failure occurs inside a method annotated with `@SafeAfter___`, then that exception will be appended to the TestNG result.
+If an exception occurs inside a method annotated with `@SafeAfterTestMethod`, then that exception will be appended to the TestNG result.
 
 The original failure exception will also be preserved.
 
@@ -79,3 +79,13 @@ This is by design - TestNG does not want AfterX methods to be considered part of
 However, in practice you may have test classes with a ton of unit tests and a single failure like this can render them difficult to troubleshoot.
 
 Additionally, you may have code that you want to share between tests automatically, that can indicate a failure with a specific test, but not compromise the entire test suite upon failure.
+
+____
+
+## Building
+
+The included Gradle3 wrappers can be used to build the project (`./gradlew` or `./gradlew.bat`).
+
+TestNG 
+
+However, this repo is meant more as an illustration of how to work around this TestNG AfterX deficiency than to server directly as a dependency.
