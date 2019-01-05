@@ -1,5 +1,6 @@
 package com.github.ajshepley;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Comparator;
 import java.util.List;
@@ -14,13 +15,27 @@ import org.testng.ITestResult;
 
 public class SafeAfterTestMethodListener implements ITestListener {
 
-  private static final Class<SafeAfterTestMethod> AFTER_TEST_ANNOTATION_CLASS = SafeAfterTestMethod.class;
+  private static final Class<SafeAfterTestMethod> AFTER_TEST_ANNOTATION_CLASS =
+      SafeAfterTestMethod.class;
 
   private static final Comparator<Method> AFTER_TEST_METHOD_COMPARATOR = Comparator.comparing(
       comparedMethod -> comparedMethod.getAnnotation(AFTER_TEST_ANNOTATION_CLASS).priority()
   );
 
   private final Map<Class, List<Method>> afterTestMethods = new ConcurrentHashMap<>();
+
+  @Override
+  public void onStart(final ITestContext context) {
+    // onStart does not reliably execute for each test class, depending on the calling test context.
+    // Therefore we do the work after test method completion, we cache the after methods found
+    // per class, and we no-op here.
+    // Due to potential parallelism of test suites, this can't simply be the list of methods.
+  }
+
+  @Override
+  public void onFinish(final ITestContext context) {
+    this.afterTestMethods.clear();
+  }
 
   @Override
   public void onTestStart(final ITestResult result) {
@@ -34,6 +49,11 @@ public class SafeAfterTestMethodListener implements ITestListener {
 
   @Override
   public void onTestFailure(final ITestResult result) {
+    this.processAfterMethods(result);
+  }
+
+  @Override
+  public void onTestFailedButWithinSuccessPercentage(final ITestResult result) {
     this.processAfterMethods(result);
   }
 
@@ -60,6 +80,31 @@ public class SafeAfterTestMethodListener implements ITestListener {
     if (CollectionTools.isNullOrEmpty(afterMethods)) {
       return;
     }
+
+    this.callAfterMethods(afterMethods, result);
+  }
+
+  private void callAfterMethods(final List<Method> afterMethods, final ITestResult testResult) {
+    final Object testClassInstance = testResult.getInstance();
+
+    for (final Method afterMethod : afterMethods) {
+      try {
+        afterMethod.invoke(testClassInstance);
+      } catch (IllegalAccessException | InvocationTargetException exc) {
+        System.out.println(
+            "Failed to access afterMethod due to security exception: "
+            + afterMethod.toString()
+            + ". Exception: "
+            + exc.toString()
+        );
+
+        testResult.setStatus(ITestResult.FAILURE);
+
+        if (testResult.getThrowable() == null) {
+          testResult.setThrowable(exc);
+        }
+      }
+    }
   }
 
   private List<Method> getAfterMethodsForClass(final Class realClass) {
@@ -73,25 +118,5 @@ public class SafeAfterTestMethodListener implements ITestListener {
 
   private boolean containsMatchingAnnotation(final Method method) {
     return method.getAnnotation(AFTER_TEST_ANNOTATION_CLASS) != null;
-  }
-
-  @Override
-  public void onTestFailedButWithinSuccessPercentage(final ITestResult result) {
-    // No-op
-  }
-
-  @Override
-  public void onStart(final ITestContext context) {
-    // onStart does not reliably execute for each test class, depending on the calling test context.
-    // Therefore we do the work after test method completion, we cache the after methods found
-    // per class, and we no-op here.
-    // Due to potential parallelism of test suites, this can't simply be the list of methods.
-  }
-
-  @Override
-  public void onFinish(final ITestContext context) {
-    // no-op
-    System.out.println(this.afterTestMethods.toString());
-    this.afterTestMethods.values().forEach(value -> System.out.println(value.toString()));
   }
 }

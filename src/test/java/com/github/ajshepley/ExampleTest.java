@@ -3,7 +3,6 @@ package com.github.ajshepley;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-import java.util.Random;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -41,25 +40,18 @@ public class ExampleTest {
     assertTrue(true);
   }
 
-//  @AfterMethod
-  public void afterMethod() {
-    if (new Random().nextBoolean()) {
-      throw new NullPointerException();
-    }
-  }
-
   @SafeAfterTestMethod(priority = 1)
   public void nullMethod() {
-
+    System.out.println("Executing nullMethod.");
   }
 
   @SafeAfterTestMethod(priority = 2)
   public void nullMethod2() {
-
+    System.out.println("Executing nullMethod2.");
   }
 
   @SafeAfterTestMethod
   public void nullMethod3() {
-
+    System.out.println("Executing nullMethod3.");
   }
 }
