@@ -4,12 +4,11 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Random;
-import javax.xml.ws.Action;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-@Listeners(SafeAfterTestListener.class)
+@Listeners(SafeAfterTestMethodListener.class)
 public class ExampleTest {
 
   @BeforeMethod(alwaysRun = true)
@@ -49,8 +48,18 @@ public class ExampleTest {
     }
   }
 
-  @Action
+  @SafeAfterTestMethod(priority = 1)
   public void nullMethod() {
+
+  }
+
+  @SafeAfterTestMethod(priority = 2)
+  public void nullMethod2() {
+
+  }
+
+  @SafeAfterTestMethod
+  public void nullMethod3() {
 
   }
 }

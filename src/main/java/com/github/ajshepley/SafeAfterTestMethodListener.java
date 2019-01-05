@@ -7,20 +7,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.xml.ws.Action;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.xml.XmlClass;
 import org.testng.xml.XmlTest;
 
-public class SafeAfterTestListener implements ITestListener {
+public class SafeAfterTestMethodListener implements ITestListener {
+
+  private static final Class<SafeAfterTestMethod> AFTER_TEST_ANNOTATION_CLASS = SafeAfterTestMethod.class;
+
+  private static final Comparator<Method> AFTER_TEST_METHOD_COMPARATOR = Comparator.comparing(
+      comparedMethod -> comparedMethod.getAnnotation(AFTER_TEST_ANNOTATION_CLASS).priority()
+  );
 
   private final Map<Class, List<Method>> afterTestMethods = new HashMap<>();
 
   @Override
   public void onTestStart(final ITestResult result) {
-    this.processAfterMethods(result);
+    // no-op
   }
 
   @Override
@@ -41,6 +46,7 @@ public class SafeAfterTestListener implements ITestListener {
   private void processAfterMethods(final ITestResult result) {
     System.out.println(this.afterTestMethods.toString());
     this.afterTestMethods.values().forEach(value -> System.out.println(value.toString()));
+
   }
 
   @Override
@@ -50,6 +56,19 @@ public class SafeAfterTestListener implements ITestListener {
 
   @Override
   public void onStart(final ITestContext context) {
+    final Class<?> supportClass = this.getTestClassForContext(context);
+
+    final Method[] methods = supportClass.getMethods();
+
+    final List<Method> afterMethodsForTestClass = Stream.of(methods)
+        .filter(this::containsMatchingAnnotation)
+        .sorted(AFTER_TEST_METHOD_COMPARATOR)
+        .collect(Collectors.toList());
+
+    this.afterTestMethods.put(supportClass, afterMethodsForTestClass);
+  }
+
+  private Class<?> getTestClassForContext(final ITestContext context) {
     final XmlTest currentXmlTest = context.getCurrentXmlTest();
 
     final List<XmlClass> xmlClasses = currentXmlTest.getXmlClasses();
@@ -59,24 +78,11 @@ public class SafeAfterTestListener implements ITestListener {
     }
 
     final XmlClass xmlClass = xmlClasses.get(0);
-    final Class<?> supportClass = xmlClass.getSupportClass();
-
-    final Method[] methods = supportClass.getMethods();
-
-    final List<Method> afterMethodsForTestClass = Stream.of(methods)
-        .filter(this::containsMatchingAnnotation)
-        .sorted(compareAnnotatedMethods())
-        .collect(Collectors.toList());
-
-    this.afterTestMethods.put(supportClass, afterMethodsForTestClass);
+    return xmlClass.getSupportClass();
   }
 
   private boolean containsMatchingAnnotation(final Method method) {
-    return method.getAnnotation(Action.class) != null;
-  }
-
-  private Comparator<Method> compareAnnotatedMethods() {
-    return Comparator.comparing(comparedMethod -> comparedMethod.getAnnotation(Action.class).hashCode());
+    return method.getAnnotation(AFTER_TEST_ANNOTATION_CLASS) != null;
   }
 
   @Override
