@@ -1,29 +1,14 @@
 package com.github.ajshepley;
 
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+// Note that the listener only needs to be present on a single unit test within the executed suite
+// to look for and invoke @SafeAfterTestMethod annotated methods.
 @Listeners(SafeAfterTestMethodListener.class)
 public class ExampleTest {
-
-  @BeforeMethod(alwaysRun = true)
-  public void setup() {
-    System.out.println("Running test setup.");
-  }
-
-  @Test
-  public void testFail() {
-    assertEquals(1, 2);
-  }
-
-  @Test
-  public void testSuccess() {
-    assertTrue(true);
-  }
 
   @Test
   public void testSuccess1() {
@@ -40,18 +25,18 @@ public class ExampleTest {
     assertTrue(true);
   }
 
+  @SafeAfterTestMethod(priority = 3)
+  public void anAfterMethod1() {
+    System.out.println("Executing ExampleTest2 afterMethod 1");
+  }
+
   @SafeAfterTestMethod(priority = 1)
-  public void nullMethod() {
-    System.out.println("Executing nullMethod.");
+  public void anAfterMethod2() {
+    System.out.println("Executing ExampleTest2 afterMethod 2");
   }
 
   @SafeAfterTestMethod(priority = 2)
-  public void nullMethod2() {
-    System.out.println("Executing nullMethod2.");
-  }
-
-  @SafeAfterTestMethod
-  public void nullMethod3() {
-    System.out.println("Executing nullMethod3.");
+  public void anAfterMethod3() {
+    System.out.println("Executing ExampleTest2 afterMethod 3");
   }
 }
