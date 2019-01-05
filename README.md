@@ -91,3 +91,12 @@ However, a classes dependency jar can be created using the `jar` task. This is i
 
 The TestNG version can be tweaked in the `ext` block in `build.gradle`.
 
+____
+
+## Project Setup
+
+A `.idea/` directory is included, which has a variation of Google's java style called "GoogleStyle-Chop".
+
+You can use that directory to instantiate the project with IntelliJ IDEA, or you can import the Gradle project in your IDE.
+
+A unit test class is provided for the main listener, and there are example unit tests that _utilize_ the listener with logging.
