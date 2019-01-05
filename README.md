@@ -95,7 +95,7 @@ ____
 
 ## Project Setup
 
-A `.idea/` directory is included, which has a variation of Google's java style called "GoogleStyle-Chop".
+A `.idea/` directory is included, which has a variation of [Google's java style](https://google.github.io/styleguide/javaguide.html) called "GoogleStyle-Chop".
 
 You can use that directory to instantiate the project with IntelliJ IDEA, or you can import the Gradle project in your IDE.
 
