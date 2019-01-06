@@ -28,16 +28,16 @@ public class ExampleTest {
 
   @SafeAfterTestMethod(priority = 3)
   public void anAfterMethod1() {
-    System.out.println("Executing ExampleTest2 afterMethod 1");
+    System.out.println("Executing ExampleTest afterMethod 1");
   }
 
   @SafeAfterTestMethod(priority = 1)
   public void anAfterMethod2() {
-    System.out.println("Executing ExampleTest2 afterMethod 2");
+    System.out.println("Executing ExampleTest afterMethod 2");
   }
 
   @SafeAfterTestMethod(priority = 2)
   public void anAfterMethod3() {
-    System.out.println("Executing ExampleTest2 afterMethod 3");
+    System.out.println("Executing ExampleTest afterMethod 3");
   }
 }
