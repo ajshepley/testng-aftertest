@@ -85,7 +85,7 @@ ____
 
 The included Gradle4 wrappers can be used to build the project (`./gradlew` or `.\gradlew.bat`).
 
-This repo is meant more as an illustration of how to work around this TestNG AfterX deficiency than to server directly as a dependency.
+This repo is meant more as an illustration of how to work around this TestNG AfterX behaviour than to serve directly as a dependency.
 
 However, a classes dependency jar can be created using the `jar` task. This is included as a default build task.
 
