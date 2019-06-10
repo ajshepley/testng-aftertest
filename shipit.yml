@@ -1,3 +1,7 @@
 deploy:
   override:
     - ./test/deploy.sh
+rollback:
+  override:
+    - ./test/rollback.sh
+ 
