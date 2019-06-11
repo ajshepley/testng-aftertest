@@ -7,4 +7,5 @@ test6
 a_failing_commit! test7`
 another_failing_commit! test8
 test9
+test10
 
