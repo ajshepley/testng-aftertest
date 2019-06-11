@@ -5,4 +5,5 @@ test4
 test5
 test6
 a_failing_commit! test7`
+another_failing_commit! test8
 
